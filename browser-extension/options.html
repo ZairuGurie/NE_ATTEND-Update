@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NE-Attend Extension Options</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #201B51;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        input[type="text"]:focus, input[type="url"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-save {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+        .btn-save:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+        .btn-reset {
+            background: #e0e0e0;
+            color: #333;
+            flex: 1;
+        }
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        .info-box strong {
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ NE-Attend Extension Settings</h1>
+        
+        <div class="section">
+            <label for="frontendUrl">Frontend URL</label>
+            <input type="url" id="frontendUrl" name="frontendUrl" placeholder="http://localhost:5173" />
+            <div class="hint">The URL where the NE-Attend web application is running</div>
+        </div>
+        
+        <div class="section">
+            <label for="backendUrl">Backend API URL</label>
+            <input type="url" id="backendUrl" name="backendUrl" placeholder="http://localhost:8000" />
+            <div class="hint">The URL where the NE-Attend API server is running</div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-save" id="saveBtn">💾 Save Settings</button>
+            <button class="btn-reset" id="resetBtn">🔄 Reset to Default</button>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="info-box">
+            <strong>ℹ️ Note:</strong> These settings control where the extension sends attendance data. 
+            For production deployment, update these URLs to your live server addresses (e.g., https://neattend.yourschool.edu).
+        </div>
+    </div>
+    
+    <script src="options.js"></script>
+</body>
+</html>
+

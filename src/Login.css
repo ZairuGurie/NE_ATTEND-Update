@@ -1,0 +1,282 @@
+/**
+ * Login Page Styles
+ * Updated to use CSS variables from design system
+ */
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-family: inherit; /* Use design system font (Inter) */
+}
+
+/* Left Panel - Login Form */
+.login-panel {
+  flex: 1;
+  background: linear-gradient(135deg, var(--brand-primary, #1e3a8a) 0%, var(--brand-secondary, #1e40af) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8, 2rem);
+  min-height: 100vh;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo */
+.logo-container {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.logo {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Login Form */
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.form-input {
+  padding: var(--space-3, 0.875rem) var(--space-4, 1rem);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  background: var(--bg-surface, white);
+  color: var(--text-primary, #1f2937);
+  transition: all var(--transition-fast, 0.2s ease);
+  outline: none;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 3px var(--interactive-primary-focus, rgba(59, 130, 246, 0.1));
+  transform: translateY(-1px);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted, #9ca3af);
+}
+
+/* Form Options */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-input {
+  width: 16px;
+  height: 16px;
+  accent-color: #10b981;
+  cursor: pointer;
+}
+
+.checkbox-text {
+  color: white;
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+.forgot-password {
+  color: white;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* Login Button */
+.login-button {
+  background: var(--interactive-success, #10b981);
+  color: var(--text-on-brand, white);
+  border: none;
+  padding: var(--space-3, 0.875rem) var(--space-6, 1.5rem);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  margin-top: var(--space-4, 1rem);
+}
+
+.login-button:hover {
+  background: var(--interactive-success-hover, #059669);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--interactive-success-focus, rgba(16, 185, 129, 0.3));
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* Create Account */
+.create-account {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.create-account-text {
+  color: white;
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+}
+
+.create-account-link {
+  color: var(--interactive-primary, #60a5fa);
+  text-decoration: none;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  transition: color var(--transition-fast, 0.2s ease);
+}
+
+.create-account-link:hover {
+  color: var(--interactive-primary-hover, #93c5fd);
+  text-decoration: underline;
+}
+
+/* Google Login Button */
+.google-login-button {
+  background: var(--interactive-primary, #4285f4);
+  color: var(--text-on-brand, white);
+  border: none;
+  padding: var(--space-3, 0.875rem) var(--space-6, 1.5rem);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3, 0.75rem);
+  width: 100%;
+}
+
+.google-login-button:hover {
+  background: var(--interactive-primary-hover, #3367d6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--interactive-primary-focus, rgba(66, 133, 244, 0.3));
+}
+
+.google-login-button:active {
+  transform: translateY(0);
+}
+
+.google-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Right Panel */
+.right-panel {
+  flex: 1;
+  background: var(--bg-surface, white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+  
+  .login-panel {
+    min-height: 60vh;
+    padding: 1.5rem;
+  }
+  
+  .right-panel {
+    min-height: 40vh;
+  }
+  
+  .login-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-panel {
+    padding: 1rem;
+  }
+  
+  .form-options {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .logo {
+    height: 90px;
+  }
+}
+
+/* Animation for smooth transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-content {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Focus states for accessibility */
+.form-input:focus,
+.login-button:focus,
+.google-login-button:focus {
+  outline: 2px solid var(--interactive-primary, #3b82f6);
+  outline-offset: 2px;
+}

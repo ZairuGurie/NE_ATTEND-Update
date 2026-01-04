@@ -1,0 +1,465 @@
+/**
+ * Dashboard.css - Instructor Dashboard Styles
+ * Phase 2: Component Migration from inline styles
+ * 
+ * Uses CSS variables from design system (index.css, design-system.css)
+ * for theme-aware styling
+ */
+
+/* ============================================================================
+ * STATUS INDICATOR COMPONENTS
+ * Used for connection status, meeting status, extension status badges
+ * ============================================================================ */
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 6px);
+  padding: var(--space-2, 6px) var(--space-3, 14px);
+  border-radius: var(--radius-full, 20px);
+  font-size: var(--font-size-sm, 13px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.status-badge--connected {
+  background: var(--status-present-bg);
+  border: 2px solid var(--status-present-border);
+}
+
+.status-badge--disconnected {
+  background: var(--status-absent-bg);
+  border: 2px solid var(--status-absent-border);
+}
+
+.status-badge--reconnecting {
+  background: var(--status-late-bg);
+  border: 2px solid var(--status-late-border);
+}
+
+.status-badge--active {
+  background: var(--status-host-bg);
+  border: 2px solid var(--status-host-border);
+}
+
+.status-badge--idle {
+  background: var(--bg-muted);
+  border: 2px solid var(--border-light);
+}
+
+.status-badge--paused {
+  background: var(--status-absent-bg);
+  border: 2px solid var(--status-absent-border);
+}
+
+.status-badge--scraping {
+  background: var(--status-late-bg);
+  border: 2px solid var(--status-late-border);
+}
+
+.status-badge--data-received {
+  background: var(--status-present-bg);
+  border: 2px solid var(--status-present-border);
+}
+
+/* Status indicator dot */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--connected {
+  background: var(--status-present-border);
+  animation: pulse 2s infinite;
+}
+
+.status-dot--disconnected {
+  background: var(--status-absent-border);
+}
+
+.status-dot--reconnecting {
+  background: var(--status-late-border);
+  animation: pulse 2s infinite;
+}
+
+.status-dot--active {
+  background: var(--status-host-border);
+}
+
+.status-dot--idle {
+  background: var(--text-muted);
+}
+
+.status-dot--paused {
+  background: var(--status-absent-border);
+  animation: pulse 1s infinite;
+}
+
+.status-dot--scraping {
+  background: var(--status-late-border);
+  animation: pulse 2s infinite;
+}
+
+/* ============================================================================
+ * SESSION SUMMARY COMPONENT
+ * Displays last session info
+ * ============================================================================ */
+
+.session-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 6px);
+  padding: var(--space-2, 6px) var(--space-3, 12px);
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-light);
+  font-size: var(--font-size-xs, 12px);
+  color: var(--text-muted);
+  margin-left: var(--space-3, 12px);
+}
+
+.session-summary__icon {
+  font-size: var(--font-size-sm, 14px);
+}
+
+.session-summary__label {
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ============================================================================
+ * RECONNECT BUTTON
+ * ============================================================================ */
+
+.btn-reconnect {
+  padding: var(--space-2, 6px) var(--space-3, 12px);
+  border-radius: var(--radius-full, 20px);
+  border: 2px solid var(--interactive-primary);
+  background: var(--interactive-primary);
+  color: var(--text-on-brand, white);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-bold, 700);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.btn-reconnect:hover {
+  background: var(--brand-primary);
+  transform: scale(1.05);
+}
+
+.btn-reconnect:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================================
+ * DEBUG INFO
+ * ============================================================================ */
+
+.debug-info {
+  font-size: var(--font-size-xs, 11px);
+  color: var(--text-muted);
+  margin-top: var(--space-1, 2px);
+}
+
+.last-updated-info {
+  font-size: var(--font-size-sm, 13px);
+  color: var(--text-secondary);
+  margin-top: var(--space-2, 6px);
+  font-style: italic;
+}
+
+.last-updated-info__extension {
+  margin-left: var(--space-3, 12px);
+  color: var(--status-host-border);
+}
+
+.last-updated-info__update {
+  margin-left: var(--space-3, 12px);
+  color: var(--status-present-border);
+}
+
+/* ============================================================================
+ * STATUS ROW (flex container for multiple status badges)
+ * ============================================================================ */
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  flex-wrap: wrap;
+}
+
+/* ============================================================================
+ * AUTHENTICATED TRACKING INDICATOR
+ * ============================================================================ */
+
+.auth-tracking-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 6px);
+  padding: var(--space-2, 6px) var(--space-3, 12px);
+  border-radius: var(--radius-full, 20px);
+  background: var(--status-verified-bg);
+  border: 2px solid var(--status-verified-border);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--status-verified-text);
+}
+
+.auth-tracking-badge__icon {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--status-verified-border);
+}
+
+/* ============================================================================
+ * ATTENDANCE TABLE STYLES
+ * ============================================================================ */
+
+.attendance-table-container {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-table th {
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  text-align: left;
+  font-weight: var(--font-weight-semibold, 600);
+  font-size: var(--font-size-sm, 13px);
+  color: var(--text-secondary);
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.attendance-table td {
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.attendance-table tr:hover td {
+  background: var(--bg-hover);
+}
+
+.attendance-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================================================
+ * PARTICIPANT ROW STYLES
+ * ============================================================================ */
+
+.participant-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+}
+
+.participant-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-default);
+}
+
+.participant-avatar--host {
+  border-color: var(--status-host-border);
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 2px);
+}
+
+.participant-name {
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.participant-email {
+  font-size: var(--font-size-xs, 12px);
+  color: var(--text-muted);
+}
+
+/* ============================================================================
+ * STAT CARDS (for dashboard stats)
+ * ============================================================================ */
+
+.stat-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-5, 20px);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-fast);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-card__title {
+  font-size: var(--font-size-sm, 13px);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium, 500);
+  margin-bottom: var(--space-2, 8px);
+}
+
+.stat-card__value {
+  font-size: var(--font-size-3xl, 28px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary);
+}
+
+.stat-card__value--present {
+  color: var(--status-present-text);
+}
+
+.stat-card__value--absent {
+  color: var(--status-absent-text);
+}
+
+.stat-card__value--late {
+  color: var(--status-late-text);
+}
+
+.stat-card--present {
+  border-left: 4px solid var(--status-present-border);
+}
+
+.stat-card--absent {
+  border-left: 4px solid var(--status-absent-border);
+}
+
+.stat-card--late {
+  border-left: 4px solid var(--status-late-border);
+}
+
+.stat-card--total {
+  border-left: 4px solid var(--brand-primary);
+}
+
+/* ============================================================================
+ * DURATION DISPLAY
+ * ============================================================================ */
+
+.duration-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-radius: var(--radius-md, 6px);
+  background: var(--bg-muted);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.duration-badge--live {
+  background: var(--status-present-bg);
+  color: var(--status-present-text);
+}
+
+/* ============================================================================
+ * RISK LEVEL BADGES
+ * ============================================================================ */
+
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.risk-badge--high {
+  background: var(--status-absent-bg);
+  color: var(--status-absent-text);
+  border: 1px solid var(--status-absent-border);
+}
+
+.risk-badge--medium {
+  background: var(--status-late-bg);
+  color: var(--status-late-text);
+  border: 1px solid var(--status-late-border);
+}
+
+.risk-badge--low {
+  background: var(--status-present-bg);
+  color: var(--status-present-text);
+  border: 1px solid var(--status-present-border);
+}
+
+.risk-badge--default {
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+
+/* ============================================================================
+ * ANIMATIONS
+ * ============================================================================ */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ============================================================================
+ * RESPONSIVE ADJUSTMENTS
+ * ============================================================================ */
+
+@media (max-width: 768px) {
+  .status-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .session-summary {
+    margin-left: 0;
+  }
+  
+  .stat-card {
+    padding: var(--space-4, 16px);
+  }
+  
+  .stat-card__value {
+    font-size: var(--font-size-2xl, 24px);
+  }
+}

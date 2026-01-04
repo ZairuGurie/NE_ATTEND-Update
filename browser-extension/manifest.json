@@ -1,0 +1,65 @@
+{
+  "action": {
+    "default_icon": {
+      "128": "icons/mac-logo-128.png",
+      "16": "icons/mac-logo-16.png",
+      "32": "icons/mac-logo-32.png",
+      "48": "icons/mac-logo-48.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "NE-Attend | Meet Attendance Collector"
+  },
+  "author": "Shubham Tiwari",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "config.js",
+        "utils/fetchHelper.js",
+        "attendance.js"
+      ],
+      "matches": [
+        "https://meet.google.com/*-*-*"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "js": [
+        "config.js",
+        "save.js"
+      ],
+      "matches": [
+        "http://localhost:5173/*",
+        "http://127.0.0.1:5173/*",
+        "https://*.neattend.app/*"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "description": "NE-Attend: fast and easy attendance tracker for Google Meet.",
+  "icons": {
+    "128": "icons/mac-logo-128.png",
+    "16": "icons/mac-logo-16.png",
+    "32": "icons/mac-logo-32.png",
+    "48": "icons/mac-logo-48.png"
+  },
+  "options_page": "options.html",
+  "manifest_version": 3,
+  "name": "NE-Attend | Meet Attendance Tracker",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications"
+  ],
+  "host_permissions": [
+    "http://localhost:5173/*",
+    "http://localhost:8000/*",
+    "http://127.0.0.1:5173/*",
+    "http://127.0.0.1:8000/*",
+    "https://*.neattend.app/*",
+    "https://meet.google.com/*-*-*"
+  ],
+  "version": "3.5"
+}

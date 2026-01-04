@@ -1,0 +1,45 @@
+{
+  "name": "ne_attend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\"",
+    "dev:frontend": "vite",
+    "dev:backend": "npm --prefix Backend run dev",
+    "dev:simple": "concurrently \"npm:dev:frontend\" \"npm --prefix Backend run simple-dev\"",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "chart.js": "^4.5.0",
+    "date-fns": "^4.1.0",
+    "get-intrinsic": "^1.3.0",
+    "papaparse": "^5.5.3",
+    "react": "^19.1.0",
+    "react-chartjs-2": "^5.3.0",
+    "react-datepicker": "^8.9.0",
+    "react-dom": "^19.1.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-router-dom": "^6.8.0",
+    "react-toastify": "^11.0.5",
+    "recharts": "^3.3.0",
+    "socket.io-client": "^4.7.5",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "vite": "^6.3.5"
+  }
+}

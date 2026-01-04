@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NE-Attend | Meet Attendance Collector</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin: 0;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .header p {
+        margin: 5px 0 0 0;
+        font-size: 12px;
+        opacity: 0.8;
+      }
+      .button {
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 8px 0;
+        transition: all 0.3s ease;
+      }
+      .button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+      .status {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 15px;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      /* Animation for new participants */
+      @keyframes pulse {
+        0% {
+          background-color: rgba(40, 167, 69, 0.3);
+        }
+        50% {
+          background-color: rgba(40, 167, 69, 0.6);
+        }
+        100% {
+          background-color: rgba(40, 167, 69, 0.3);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .new-participant {
+        animation: pulse 2s ease-in-out, fadeIn 0.5s ease-out;
+      }
+
+      /* End Session Confirmation Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-overlay.show {
+        display: flex;
+      }
+      .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 320px;
+        width: 90%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        color: #333;
+      }
+      .modal-content h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        color: #dc3545;
+      }
+      .modal-content p {
+        margin: 0 0 12px 0;
+        font-size: 14px;
+        color: #666;
+      }
+      .modal-content ul {
+        margin: 0 0 20px 0;
+        padding-left: 20px;
+        font-size: 13px;
+        color: #555;
+      }
+      .modal-content li {
+        margin: 6px 0;
+      }
+      .modal-summary {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 20px;
+        font-size: 12px;
+      }
+      .modal-summary strong {
+        color: #333;
+      }
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .modal-buttons button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .btn-confirm {
+        background: #dc3545;
+        color: white;
+      }
+      .btn-confirm:hover {
+        background: #c82333;
+      }
+      .btn-cancel {
+        background: #6c757d;
+        color: white;
+      }
+      .btn-cancel:hover {
+        background: #5a6268;
+      }
+      .session-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+      .session-status.active {
+        background: rgba(40, 167, 69, 0.2);
+        border: 1px solid rgba(40, 167, 69, 0.4);
+      }
+      .session-status.inactive {
+        background: rgba(108, 117, 125, 0.2);
+        border: 1px solid rgba(108, 117, 125, 0.4);
+      }
+      .session-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: blink 1.5s infinite;
+      }
+      .session-dot.active {
+        background: #28a745;
+      }
+      .session-dot.inactive {
+        background: #6c757d;
+        animation: none;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🟡 NE-Attend</h1>
+      <p>Meet Attendance Collector</p>
+    </div>
+
+    <button class="button" id="openDashboard" type="button">
+      📊 Open NE-Attend Dashboard
+    </button>
+
+    <button class="button" id="openReceiver" type="button">
+      📊 Open Dashboard
+    </button>
+
+    <button class="button" id="toggleExtension" type="button">
+      🟢 Enable Extension
+    </button>
+
+    <button class="button" id="showRealtime" type="button">
+      👀 Show Realtime Monitor
+    </button>
+
+    <button class="button" id="testConnection" type="button">
+      🔧 Test Connection
+    </button>
+
+    <button class="button" id="refreshToken" type="button">
+      🔄 Refresh Token
+    </button>
+
+    <button
+      class="button"
+      id="endSession"
+      type="button"
+      style="
+        background: rgba(220, 53, 69, 0.8);
+        border-color: rgba(220, 53, 69, 0.9);
+      "
+    >
+      🛑 End Session &amp; Save Attendance
+    </button>
+
+    <div
+      id="tokenStatus"
+      style="
+        display: none;
+        margin-top: 12px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      "
+    >
+      <div id="tokenStatusText" style="font-size: 11px; line-height: 1.5">
+        <!-- Token status will be displayed here -->
+      </div>
+    </div>
+
+    <div class="loading" id="loading">Checking connection...</div>
+
+    <div class="status" id="status">Click a button to get started</div>
+
+    <div
+      id="monitor"
+      style="
+        margin-top: 12px;
+        max-height: 400px;
+        overflow: auto;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0;
+        display: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <!-- Header matching the image style -->
+      <div
+        id="monitorHeader"
+        style="
+          background: #f8f9fa;
+          padding: 16px;
+          border-bottom: 1px solid #e0e0e0;
+          text-align: center;
+          font-weight: bold;
+          font-size: 16px;
+          color: #1a365d;
+        "
+      >
+        REAL-TIME MEETING STATUS
+      </div>
+      <div
+        id="monitorMeta"
+        style="
+          padding: 8px 16px;
+          font-size: 12px;
+          color: #666;
+          background: #f8f9fa;
+          border-bottom: 1px solid #e0e0e0;
+        "
+      >
+        No active meeting
+      </div>
+
+      <!-- Host Section -->
+      <div
+        id="hostSection"
+        style="
+          display: none;
+          background: linear-gradient(135deg, #ffd60020 0%, #ffa50020 100%);
+          border-bottom: 2px solid #ffd600;
+          padding: 12px 16px;
+        "
+      >
+        <div
+          style="
+            font-weight: 800;
+            font-size: 11px;
+            color: #23225c;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          "
+        >
+          <span style="font-size: 14px">👑</span>
+          <span>HOST / INSTRUCTOR</span>
+        </div>
+        <div
+          id="hostInfo"
+          style="
+            background: white;
+            border-radius: 6px;
+            padding: 10px;
+            border: 2px solid #ffd600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          "
+        >
+          <!-- Host information will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Participants Label -->
+      <div
+        id="participantsLabel"
+        style="
+          display: none;
+          background: #f8f9fa;
+          padding: 8px 16px;
+          font-weight: 700;
+          font-size: 11px;
+          color: #23225c;
+          border-bottom: 1px solid #e0e0e0;
+        "
+      >
+        PARTICIPANTS
+      </div>
+
+      <!-- Table view matching the instructor dashboard design -->
+      <div id="attendanceTable" style="display: none">
+        <table
+          style="
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            background: white;
+          "
+        >
+          <thead>
+            <tr style="background: #efeffb; border-bottom: 2px solid #ddd">
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                GROUP
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                DATE
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                PARTICIPANT ID
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                PARTICIPANT NAME
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                TIME IN
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                TIME OUT
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                DURATION
+              </th>
+              <th
+                style="
+                  padding: 8px 6px;
+                  text-align: left;
+                  font-weight: 800;
+                  color: #23225c;
+                  font-size: 10px;
+                "
+              >
+                LOG
+              </th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTableBody">
+            <!-- Dynamic rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fallback simple list view -->
+      <ul
+        id="participantList"
+        style="
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: none;
+          padding: 16px;
+        "
+      >
+        <!-- Simple participant list fallback -->
+      </ul>
+
+      <!-- Control buttons -->
+      <div
+        id="monitorControls"
+        style="
+          padding: 12px 16px;
+          background: #f8f9fa;
+          border-top: 1px solid #e0e0e0;
+          display: flex;
+          gap: 8px;
+        "
+      >
+        <button
+          id="refreshMonitor"
+          type="button"
+          style="
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+          "
+        >
+          🔄 Refresh
+        </button>
+        <button
+          id="exportData"
+          type="button"
+          style="
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            background: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+          "
+        >
+          📊 Export
+        </button>
+        <button
+          id="toggleView"
+          type="button"
+          style="
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            background: #6c757d;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+          "
+        >
+          📋 Table
+        </button>
+      </div>
+    </div>
+
+    <!-- Session Status Indicator -->
+    <div id="sessionStatus" class="session-status inactive">
+      <div class="session-dot inactive" id="sessionDot"></div>
+      <span id="sessionStatusText">No active session</span>
+    </div>
+
+    <!-- End Session Confirmation Modal -->
+    <div id="endSessionModal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>⚠️ End Recording Session?</h3>
+        <p>This action will:</p>
+        <ul>
+          <li>✓ Stop recording attendance</li>
+          <li>✓ Send final data to server</li>
+          <li>✓ Save to attendance history</li>
+          <li>✓ Release the session token</li>
+        </ul>
+        <div id="sessionSummary" class="modal-summary">
+          <strong>Session Summary:</strong><br />
+          <span id="summaryMeetCode">Meet Code: --</span><br />
+          <span id="summaryParticipants">Participants: 0</span><br />
+          <span id="summaryDuration">Duration: 00:00:00</span>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" id="cancelEndSession" class="btn-cancel">
+            Cancel
+          </button>
+          <button type="button" id="confirmEndSession" class="btn-confirm">
+            End Session
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="trackit.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

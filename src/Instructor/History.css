@@ -1,0 +1,480 @@
+/**
+ * History.css - Attendance History Page Styles
+ * Phase 2.3: Component Migration
+ * 
+ * Uses CSS variables from design system for theme-aware styling
+ */
+
+/* ============================================================================
+ * HISTORY PAGE LAYOUT
+ * ============================================================================ */
+
+.history-page {
+  min-height: 100vh;
+  background: var(--bg-page);
+  display: flex;
+}
+
+.history-content {
+  flex: 1;
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.history-main {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
+ * HISTORY HEADER
+ * ============================================================================ */
+
+.history-header {
+  margin-bottom: var(--space-6);
+}
+
+.history-header__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.history-header__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ============================================================================
+ * HISTORY FILTERS
+ * ============================================================================ */
+
+.history-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
+}
+
+.history-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 200px;
+}
+
+.history-filter-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.history-filter-select {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.history-filter-select:focus {
+  outline: none;
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 3px var(--interactive-primary-focus);
+}
+
+.history-filter-input {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.history-filter-input:focus {
+  outline: none;
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 3px var(--interactive-primary-focus);
+}
+
+.history-filter-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-end;
+}
+
+/* ============================================================================
+ * HISTORY SESSION CARDS
+ * ============================================================================ */
+
+.history-sessions-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.history-session-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.history-session-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.history-session-card--expanded {
+  box-shadow: var(--shadow-lg);
+}
+
+.history-session-header {
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.history-session-header:hover {
+  background: var(--bg-hover);
+}
+
+.history-session-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.history-session-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.history-session-meta {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.history-session-meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.history-session-stats {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.history-session-stat {
+  text-align: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  min-width: 60px;
+}
+
+.history-session-stat--present {
+  background: var(--status-present-bg);
+  color: var(--status-present-text);
+}
+
+.history-session-stat--absent {
+  background: var(--status-absent-bg);
+  color: var(--status-absent-text);
+}
+
+.history-session-stat--late {
+  background: var(--status-late-bg);
+  color: var(--status-late-text);
+}
+
+.history-session-stat__value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.history-session-stat__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.history-session-expand {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.history-session-expand:hover {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
+.history-session-expand__icon {
+  transition: transform var(--transition-fast);
+}
+
+.history-session-card--expanded .history-session-expand__icon {
+  transform: rotate(180deg);
+}
+
+/* ============================================================================
+ * HISTORY SESSION DETAILS (expanded view)
+ * ============================================================================ */
+
+.history-session-details {
+  border-top: 1px solid var(--border-light);
+  padding: var(--space-5);
+  background: var(--bg-muted);
+  animation: slideUp var(--transition-normal);
+}
+
+.history-session-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.history-participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.history-participants-table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--bg-muted);
+  border-bottom: 2px solid var(--border-default);
+}
+
+.history-participants-table td {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.history-participants-table tr:hover td {
+  background: var(--bg-hover);
+}
+
+.history-participants-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================================================
+ * HISTORY PARTICIPANT ROW
+ * ============================================================================ */
+
+.history-participant {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.history-participant__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-default);
+}
+
+.history-participant__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-participant__name {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.history-participant__email {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ============================================================================
+ * HISTORY DURATION BADGE
+ * ============================================================================ */
+
+.history-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+/* ============================================================================
+ * HISTORY PAGINATION
+ * ============================================================================ */
+
+.history-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+.history-pagination__btn {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.history-pagination__btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--interactive-primary);
+}
+
+.history-pagination__btn--active {
+  background: var(--interactive-primary);
+  color: var(--text-on-brand);
+  border-color: var(--interactive-primary);
+}
+
+.history-pagination__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history-pagination__info {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  padding: 0 var(--space-3);
+}
+
+/* ============================================================================
+ * HISTORY EMPTY STATE
+ * ============================================================================ */
+
+.history-empty {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.history-empty__icon {
+  font-size: 64px;
+  color: var(--text-muted);
+  opacity: 0.5;
+  margin-bottom: var(--space-4);
+}
+
+.history-empty__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.history-empty__description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
+ * RESPONSIVE DESIGN
+ * ============================================================================ */
+
+@media (max-width: 1024px) {
+  .history-filters {
+    flex-direction: column;
+  }
+  
+  .history-filter-group {
+    min-width: 100%;
+  }
+  
+  .history-session-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  
+  .history-session-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .history-content {
+    padding: var(--space-4);
+  }
+  
+  .history-session-meta {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .history-session-stats {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  
+  .history-session-stat {
+    flex: 1;
+    min-width: 70px;
+  }
+  
+  .history-participants-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

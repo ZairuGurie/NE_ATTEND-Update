@@ -1,0 +1,61 @@
+/**
+ * App.css - Global Application Styles
+ * Note: Most styles should come from design-system.css and index.css
+ * This file only contains app-specific overrides
+ */
+
+/* Root container - full width, no restrictions */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Logo styles for branding */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter var(--transition-normal, 300ms);
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em var(--brand-light, #646cffaa));
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Logo spin animation */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* 
+ * DEPRECATED: Use Card component from components/ui instead
+ * This class is kept for backwards compatibility only
+ */
+.card {
+  padding: var(--spacing-6, 2em);
+  background: var(--bg-surface, #ffffff);
+  border-radius: var(--radius-lg, 8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.read-the-docs {
+  color: var(--text-muted, #888);
+}
