@@ -1,15 +1,25 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "builds": [
     {
-      "src": "./server.js",
+      "src": "Backend/server.js",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "Backend/server.js"
+    },
+    {
+      "source": "/socket.io/:path*",
+      "destination": "Backend/server.js"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "/index.html"
     }
   ]
 }
