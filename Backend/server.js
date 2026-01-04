@@ -1069,69 +1069,75 @@ app.use('*', (req, res) => {
   })
 })
 
-// Wait for database connection before starting server
-waitForConnection()
-  .then(() => {
-    if (SCHEDULE_ENGINE_ENABLED) {
-      startScheduleEngine()
-    } else {
-      console.log(
-        '⏹️  Schedule engine disabled via SCHEDULE_ENGINE_ENABLED=false'
-      )
-    }
-    if (TOKEN_CLEANUP_INTERVAL_MINUTES > 0) {
-      const cleanup = () => {
-        cleanupExpiredTokens({
-          olderThanMinutes: TOKEN_CLEANUP_INTERVAL_MINUTES
-        }).catch(err => {
-          console.error('❌ Token cleanup failed:', err.message)
-        })
-      }
-      cleanup()
-      setInterval(cleanup, TOKEN_CLEANUP_INTERVAL_MINUTES * 60000).unref?.()
-    }
-    server.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`)
-      console.log(`📊 API Health Check: http://localhost:${PORT}/api/health`)
-      const status = getStatus()
-      if (status.local.status === 'connected') {
-        console.log('✅ Using local MongoDB database')
-      }
-      if (status.cloud.status === 'connected') {
-        console.log('✅ Using cloud MongoDB database')
-      }
-    })
-    server.on('error', err => {
-      if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Port ${PORT} is already in use`)
-        console.error(`   Please either:`)
-        console.error(`   1. Kill the process using port ${PORT}`)
-        console.error(
-          `   2. Set a different PORT in .env file (e.g., PORT=8001)`
-        )
-        console.error(
-          `   3. On Windows: netstat -ano | findstr :${PORT} then taskkill /PID <pid> /F`
-        )
-        console.error(`   4. On Linux/Mac: lsof -ti:${PORT} | xargs kill -9`)
-        process.exit(1)
+// Export app for Vercel serverless functions
+module.exports = app
+
+// Only start the server if this file is run directly (not imported)
+if (require.main === module) {
+  // Wait for database connection before starting server
+  waitForConnection()
+    .then(() => {
+      if (SCHEDULE_ENGINE_ENABLED) {
+        startScheduleEngine()
       } else {
-        console.error('❌ Server error:', err)
-        process.exit(1)
+        console.log(
+          '⏹️  Schedule engine disabled via SCHEDULE_ENGINE_ENABLED=false'
+        )
       }
+      if (TOKEN_CLEANUP_INTERVAL_MINUTES > 0) {
+        const cleanup = () => {
+          cleanupExpiredTokens({
+            olderThanMinutes: TOKEN_CLEANUP_INTERVAL_MINUTES
+          }).catch(err => {
+            console.error('❌ Token cleanup failed:', err.message)
+          })
+        }
+        cleanup()
+        setInterval(cleanup, TOKEN_CLEANUP_INTERVAL_MINUTES * 60000).unref?.()
+      }
+      server.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`)
+        console.log(`📊 API Health Check: http://localhost:${PORT}/api/health`)
+        const status = getStatus()
+        if (status.local.status === 'connected') {
+          console.log('✅ Using local MongoDB database')
+        }
+        if (status.cloud.status === 'connected') {
+          console.log('✅ Using cloud MongoDB database')
+        }
+      })
+      server.on('error', err => {
+        if (err.code === 'EADDRINUSE') {
+          console.error(`❌ Port ${PORT} is already in use`)
+          console.error(`   Please either:`)
+          console.error(`   1. Kill the process using port ${PORT}`)
+          console.error(
+            `   2. Set a different PORT in .env file (e.g., PORT=8001)`
+          )
+          console.error(
+            `   3. On Windows: netstat -ano | findstr :${PORT} then taskkill /PID <pid> /F`
+          )
+          console.error(`   4. On Linux/Mac: lsof -ti:${PORT} | xargs kill -9`)
+          process.exit(1)
+        } else {
+          console.error('❌ Server error:', err)
+          process.exit(1)
+        }
+      })
     })
-  })
-  .catch(error => {
-    console.error('')
-    console.error('❌ Failed to start server:', error.message)
-    console.error('')
-    console.error('   The server requires a MongoDB connection to start.')
-    console.error('   See error messages above for troubleshooting steps.')
-    console.error('')
-    console.error("   💡 Tip: Use simple-server.js if you don't have MongoDB:")
-    console.error('      npm run dev:simple')
-    console.error('')
-    process.exit(1)
-  })
+    .catch(error => {
+      console.error('')
+      console.error('❌ Failed to start server:', error.message)
+      console.error('')
+      console.error('   The server requires a MongoDB connection to start.')
+      console.error('   See error messages above for troubleshooting steps.')
+      console.error('')
+      console.error("   💡 Tip: Use simple-server.js if you don't have MongoDB:")
+      console.error('      npm run dev:simple')
+      console.error('')
+      process.exit(1)
+    })
+}
 
 // Store extension connections and their associated instructors/meetings
 const extensionConnections = new Map() // Map<socketId, {instructorId, meetCode, groupId, lastHeartbeat}>
